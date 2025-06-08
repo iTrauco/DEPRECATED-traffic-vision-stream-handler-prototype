@@ -29,8 +29,12 @@ exports.startRecording = (req, res) => {
         filepath
     ]);
     
+    ffmpeg.stdout.on('data', (data) => {
+        console.log(`FFmpeg stdout ${id}: ${data}`);
+    });
+    
     ffmpeg.stderr.on('data', (data) => {
-        console.log(`FFmpeg ${id}: ${data}`);
+        console.log(`FFmpeg stderr ${id}: ${data}`);
     });
     
     ffmpeg.on('error', (error) => {
