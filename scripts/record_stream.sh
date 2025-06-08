@@ -10,7 +10,7 @@ RECORDINGS_DIR="$(dirname "$0")/../recordings"
 mkdir -p "$RECORDINGS_DIR"
 
 # Run FFmpeg in background
-nohup ffmpeg \
+nohup /usr/bin/ffmpeg \
     -i "$URL" \
     -c copy \
     -f mp4 \
