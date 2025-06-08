@@ -26,8 +26,13 @@ exports.startRecording = (req, res) => {
         '-i', url,
         '-c', 'copy',
         '-bsf:a', 'aac_adtstoasc',
+        '-f', 'mp4',
+        '-movflags', 'frag_keyframe+empty_moov',
         filepath
-    ]);
+    ], {
+        detached: true,
+        stdio: ['ignore', 'pipe', 'pipe']
+    });
     
     ffmpeg.stdout.on('data', (data) => {
         console.log(`FFmpeg stdout ${id}: ${data}`);
@@ -69,7 +74,13 @@ exports.stopRecording = (req, res) => {
         return res.status(400).json({ error: 'ID required' });
     }
     
+    console.log('Stopping recording:', id);
+    console.log('Active recordings:', Array.from(activeRecordings.keys()));
+    
     const recording = activeRecordings.get(id);
+    if (!recording) {
+        return res.status(404).json({ error: 'Recording not found' });
+    }(id);
     if (!recording) {
         return res.status(404).json({ error: 'Recording not found' });
     }
