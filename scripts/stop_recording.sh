@@ -3,7 +3,8 @@
 # Usage: ./stop_recording.sh <output_filename>
 
 OUTPUT=$1
-RECORDINGS_DIR="$(dirname "$0")/../recordings"
+PROJECT_ROOT="$(dirname "$0")/.."
+RECORDINGS_DIR="$PROJECT_ROOT/recordings"
 PID_FILE="$RECORDINGS_DIR/$OUTPUT.pid"
 
 if [ -f "$PID_FILE" ]; then

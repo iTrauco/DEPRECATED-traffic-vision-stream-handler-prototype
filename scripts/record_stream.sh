@@ -4,18 +4,17 @@
 
 URL=$1
 OUTPUT=$2
-RECORDINGS_DIR="$(dirname "$0")/../recordings"
+PROJECT_ROOT="$(dirname "$0")/.."
+RECORDINGS_DIR="$PROJECT_ROOT/recordings"
 
 # Create recordings dir if it doesn't exist
 mkdir -p "$RECORDINGS_DIR"
 
-# Run FFmpeg in background
-nohup /usr/bin/ffmpeg \
-    -i "$URL" \
-    -c copy \
-    -f mp4 \
-    -y \
-    "$RECORDINGS_DIR/$OUTPUT" \
+# Run streamlink in background
+nohup streamlink \
+    "$URL" \
+    best \
+    -o "$RECORDINGS_DIR/$OUTPUT" \
     > "$RECORDINGS_DIR/$OUTPUT.log" 2>&1 &
 
 # Save PID for stopping later
