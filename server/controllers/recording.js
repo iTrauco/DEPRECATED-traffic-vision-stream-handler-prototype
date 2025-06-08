@@ -17,45 +17,21 @@ exports.startRecording = (req, res) => {
         return res.status(400).json({ error: 'Recording already active for this ID' });
     }
     
-    const timestamp = new Date().toISOString().replace(/:/g, '-');
+    const timestamp = new Date().toISOString().replace(/:/g, '_').replace(/-/g, '_').replace(/\./g, '_');
     const filename = `recording_${id}_${timestamp}.mp4`;
-    const filepath = path.join(__dirname, '../../recordings', filename);
+    const scriptPath = path.join(__dirname, '../../scripts/record_stream.sh');
     
-    // FFmpeg command to record HLS stream
-    const ffmpeg = spawn('ffmpeg', [
-        '-i', url,
-        '-c', 'copy',
-        '-bsf:a', 'aac_adtstoasc',
-        '-f', 'mp4',
-        '-movflags', 'frag_keyframe+empty_moov',
-        filepath
-    ], {
+    // Execute recording script
+    const recordProcess = spawn('bash', [scriptPath, url, filename], {
         detached: true,
-        stdio: ['ignore', 'pipe', 'pipe']
+        stdio: 'ignore'
     });
     
-    ffmpeg.stdout.on('data', (data) => {
-        console.log(`FFmpeg stdout ${id}: ${data}`);
-    });
-    
-    ffmpeg.stderr.on('data', (data) => {
-        console.error(`FFmpeg stderr ${id}: ${data}`);
-    });
-    
-    ffmpeg.on('error', (error) => {
-        console.error(`FFmpeg spawn error for ${id}:`, error);
-        activeRecordings.delete(id);
-    });
-    
-    ffmpeg.on('exit', (code, signal) => {
-        console.log(`FFmpeg ${id} exited with code ${code} signal ${signal}`);
-        activeRecordings.delete(id);
-    });
+    recordProcess.unref();
     
     activeRecordings.set(id, {
-        process: ffmpeg,
-        url,
         filename,
+        url,
         startTime: new Date()
     });
     
@@ -80,12 +56,15 @@ exports.stopRecording = (req, res) => {
     const recording = activeRecordings.get(id);
     if (!recording) {
         return res.status(404).json({ error: 'Recording not found' });
-    }(id);
-    if (!recording) {
-        return res.status(404).json({ error: 'Recording not found' });
     }
     
-    recording.process.kill('SIGINT');
+    const scriptPath = path.join(__dirname, '../../scripts/stop_recording.sh');
+    const stopProcess = spawn('bash', [scriptPath, recording.filename], {
+        detached: true,
+        stdio: 'ignore'
+    });
+    
+    stopProcess.unref();
     activeRecordings.delete(id);
     
     res.json({ 
