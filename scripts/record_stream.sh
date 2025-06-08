@@ -11,10 +11,10 @@ mkdir -p "$RECORDINGS_DIR"
 
 # Run FFmpeg in background
 nohup ffmpeg \
-    -user_agent "Mozilla/5.0 (compatible; GDOT-Viewer)" \
     -i "$URL" \
     -c copy \
     -f mp4 \
+    -y \
     "$RECORDINGS_DIR/$OUTPUT" \
     > "$RECORDINGS_DIR/$OUTPUT.log" 2>&1 &
 
