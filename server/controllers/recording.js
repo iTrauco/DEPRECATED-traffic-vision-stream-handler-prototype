@@ -39,16 +39,16 @@ exports.startRecording = (req, res) => {
     });
     
     ffmpeg.stderr.on('data', (data) => {
-        console.log(`FFmpeg stderr ${id}: ${data}`);
+        console.error(`FFmpeg stderr ${id}: ${data}`);
     });
     
     ffmpeg.on('error', (error) => {
-        console.error(`FFmpeg error for ${id}:`, error);
+        console.error(`FFmpeg spawn error for ${id}:`, error);
         activeRecordings.delete(id);
     });
     
-    ffmpeg.on('exit', (code) => {
-        console.log(`FFmpeg ${id} exited with code ${code}`);
+    ffmpeg.on('exit', (code, signal) => {
+        console.log(`FFmpeg ${id} exited with code ${code} signal ${signal}`);
         activeRecordings.delete(id);
     });
     
