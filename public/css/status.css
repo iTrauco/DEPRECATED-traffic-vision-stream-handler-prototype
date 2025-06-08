@@ -1,0 +1,22 @@
+/* Status styles */
+#status {
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#status.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+#status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+#status.success {
+    background-color: #d4edda;
+    color: #155724;
+}

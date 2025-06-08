@@ -1,0 +1,12 @@
+/* Video styles */
+.video-container {
+    background-color: black;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+video {
+    width: 100%;
+    display: block;
+}

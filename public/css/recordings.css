@@ -1,0 +1,27 @@
+/* Recordings styles */
+#recordings {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+#recordings h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+#recordingsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#recordingsList li {
+    padding: 5px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#recordingsList li:last-child {
+    border-bottom: none;
+}
