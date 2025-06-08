@@ -21,6 +21,11 @@ if (!fs.existsSync(recordingsDir)) {
 const routes = require('./routes');
 app.use('/', routes);
 
+// Debug endpoint
+app.get('/test', (req, res) => {
+    res.json({ message: 'Server is running' });
+});
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);
 });

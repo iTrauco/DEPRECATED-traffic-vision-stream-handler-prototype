@@ -18,7 +18,7 @@ const recorder = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    url: streamUrl,
+                    url: streamUrl,  // This should be the original URL, not proxy
                     id: player.currentStreamId
                 })
             });
